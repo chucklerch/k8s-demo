@@ -4,7 +4,6 @@ metadata:
   name: html
   labels:
     app: webapp
-immutable: true
 data:
   index.html: |
     <!DOCTYPE html>
@@ -22,5 +21,6 @@ data:
      </head>
      <body>
       <h1>Welcome v1</h1>
+      <!--# echo var="HOSTNAME" default="unknown" -->
      </body>
     </html>

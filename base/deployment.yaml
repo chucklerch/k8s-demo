@@ -95,7 +95,12 @@ spec:
         - mountPath: /usr/share/nginx/html/index.html
           name: html
           subPath: index.html
+        - mountPath: /etc/nginx/conf.d
+          name: config
       volumes:
       - name: html
         configMap:
           name: html
+      - name: config
+        configMap:
+          name: default.conf
