@@ -8,6 +8,7 @@ data:
   default.conf: |
     server {
         listen 80;
+        keepalive_timeout 10;
         server_name localhost;
 
         location / {
