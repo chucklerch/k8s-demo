@@ -4,7 +4,10 @@ MAKEFLAGS += --silent
 BLUE=\033[36m
 NC=\033[0m
 
-KUBECTL_OPTS:=--dry-run=client --output=yaml
+.PHONY: init
+init: # Initialize the project
+	@echo "${BLUE}Initializing.${NC}"
+	mkdir -p output
 
 .PHONY: install-kustomize
 install-kustomize: # Install kustomize
@@ -25,6 +28,13 @@ install-yq: # Install yq
 base: # Start base version of webapp
 	@echo "${BLUE}Starting base website.${NC}"
 	kustomize build base --output output/
+	kubectl apply -f output/
+
+.PHONY: ha
+ha: # Start HA version of webapp
+	@echo "${BLUE}Starting HA website.${NC}"
+	kustomize build overlays/ha --output output/
+	kubectl apply -f output/
 
 .PHONY: testing
 testing: # Start testing version of webapp
@@ -42,8 +52,8 @@ external: # Make application Internet accessible
 .PHONY: clean
 clean: # Delete everything
 	@echo "${BLUE}Cleaning.${NC}"
+	kubectl delete -f output/
 	rm -rf output/*
-	kubectl delete deployment,ing,cm,secret,netpol,pdb,svc,all -l app=webapp
 
 .PHONY: port-forward
 port-forward: # Port forward to webapp
