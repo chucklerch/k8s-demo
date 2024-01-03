@@ -10,8 +10,7 @@ spec:
         whenUnsatisfiable: ScheduleAnyway 
         labelSelector:
           matchLabels:
-            app: ignored
-            version: v1.0.0
+            app: webapp
       affinity:
         podAntiAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -20,7 +19,7 @@ spec:
               - key: app
                 operator: In
                 values:
-                - ignored
+                - webapp
             topologyKey: "kubernetes.io/hostname"
           preferredDuringSchedulingIgnoredDuringExecution:
           - weight: 100
@@ -30,5 +29,5 @@ spec:
                 - key: app
                   operator: In
                   values:
-                  - ignored
+                  - webapp
               topologyKey: "kubernetes.io/hostname"
