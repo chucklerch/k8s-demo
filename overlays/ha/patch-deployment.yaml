@@ -2,6 +2,7 @@ kind: ignored
 metadata:
   name: ignored
 spec:
+  template:
     spec:
       topologySpreadConstraints:
       - topologyKey: topology.kubernetes.io/zone
