@@ -12,3 +12,8 @@ labels:
   includeTemplates: true
   pairs:
     app: webapp
+patches:
+  - path: patch-deployment.yaml
+    target:
+      kind: Deployment
+      name: webapp
