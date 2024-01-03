@@ -4,7 +4,7 @@ MAKEFLAGS += --silent
 BLUE=\033[36m
 NC=\033[0m
 
-KUBECTL_OPTS:=--dry-run=client --output=yaml --namespace=chuck
+KUBECTL_OPTS:=--dry-run=client --output=yaml
 
 .PHONY: install-kustomize
 install-kustomize: # Install kustomize
@@ -21,10 +21,15 @@ install-yq: # Install yq
 	chmod +x ~/bin/yq
 	rm yq.tgz
 
-.PHONY: base default
-base default: # Start base version of webapp
+.PHONY: base
+base: # Start base version of webapp
 	@echo "${BLUE}Starting base website.${NC}"
-	kustomize build base | yq
+	kustomize build base --output output/
+
+.PHONY: testing
+testing: # Start testing version of webapp
+	@echo "${BLUE}Starting testing website.${NC}"
+	kustomize build overlays/testing --output output/
 
 .PHONY: istio
 istio: # Enable Istio
@@ -37,8 +42,13 @@ external: # Make application Internet accessible
 .PHONY: clean
 clean: # Delete everything
 	@echo "${BLUE}Cleaning.${NC}"
-	kubectl delete deployment,ing,cm,cert,secret,netpol,so,pdb,all -l app=webapp
-	kubectl delete vs,pa,destinationrules,envoyfilters -l app=webapp
+	rm -rf output/*
+	kubectl delete deployment,ing,cm,secret,netpol,pdb,svc,all -l app=webapp
+
+.PHONY: port-forward
+port-forward: # Port forward to webapp
+	@echo "${BLUE}Port forwarding.${NC}"
+	kubectl port-forward service/webapp 8080:http
 
 .PHONY: help
 help: # Show this help

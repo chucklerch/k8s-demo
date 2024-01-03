@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: html
+  labels:
+    app: webapp
+immutable: true
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html>
+     <head>
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <title>Welcome v1</title>
+     <style>
+       body {
+         font-family: Tahoma, Verdana, Arial, sans-serif;
+         background-color: cornflowerblue;
+         text-align: center;
+       }
+     </style>
+     </head>
+     <body>
+      <h1>Welcome v1</h1>
+     </body>
+    </html>
