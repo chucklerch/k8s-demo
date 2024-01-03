@@ -36,6 +36,13 @@ ha: # Start HA version of webapp
 	kustomize build overlays/ha --output output/
 	kubectl apply -f output/
 
+# Get 1 pod name to be used in debug target
+POD != kubectl get pods -l app=webapp -o jsonpath='{.items[0].metadata.name}'
+.PHONY: debug
+debug: # Starting debug container
+	@echo "${BLUE}Starting debug container.${NC}"
+	kubectl debug --quiet -it --image-pull-policy=Always --image=busybox --target=nginx $(POD)
+
 .PHONY: testing
 testing: # Start testing version of webapp
 	@echo "${BLUE}Starting testing website.${NC}"
