@@ -5,7 +5,7 @@ metadata:
   labels:
     app: webapp
 data:
-  default.conf: |
+  default.conf.template: |
     server {
         listen 80;
         keepalive_timeout 10;
@@ -14,6 +14,9 @@ data:
         location / {
             root /usr/share/nginx/html;
             index index.html;
+            set $VERSION "$APP_VERSION";
+            set $BG "$BG_COLOR";
+            set $NODENAME "$NODE_NAME";
         }
 
         error_page 500 502 503 504 /50x.html;
@@ -23,5 +26,5 @@ data:
 
         ssi on;
         ssi_silent_errors off;
-        ssi_last_modified on;
+        ssi_last_modified off;
     }

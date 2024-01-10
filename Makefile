@@ -36,8 +36,26 @@ ha: # Start HA version of webapp
 	kustomize build overlays/ha --output output/
 	kubectl apply -f output/
 
+.PHONY: ingress
+ingress: # Start ingress / HA version of webapp
+	@echo "${BLUE}Starting ingress website.${NC}"
+	kustomize build overlays/ingress --output output/
+	kubectl apply -f output/
+
+.PHONY: v1
+v1: # Start version 1.0.0 of webapp
+	@echo "${BLUE}Starting v1 website.${NC}"
+	kustomize build overlays/v1 --output output/
+	kubectl apply -f output/
+
+.PHONY: v2
+v2: # Start version 2.0.0 of webapp
+	@echo "${BLUE}Starting v2 website.${NC}"
+	kustomize build overlays/v2 --output output/
+	kubectl apply -f output/
+
 # Get 1 pod name to be used in debug target
-POD != kubectl get pods -l app=webapp -o jsonpath='{.items[0].metadata.name}'
+POD != kubectl get pods -l app=webapp -o jsonpath='{.items[0].metadata.name}' 2> /dev/null
 .PHONY: debug
 debug: # Starting debug container
 	@echo "${BLUE}Starting debug container.${NC}"
@@ -51,10 +69,6 @@ testing: # Start testing version of webapp
 .PHONY: istio
 istio: # Enable Istio
 	@echo "${BLUE}Starting Istio enalbled website.${NC}"
-
-.PHONY: external
-external: # Make application Internet accessible
-	@echo "${BLUE}Starting external website.${NC}"
 
 .PHONY: clean
 clean: # Delete everything
