@@ -5,6 +5,7 @@ metadata:
     annotations:
       kubectl.kubernetes.io/default-container: nginx
       reloader.stakater.com/auto: "true"
+      downscaler/exclude: "true"
       #cleanup.kyverno.io/ttl: 2m
     labels:
       app: webapp
